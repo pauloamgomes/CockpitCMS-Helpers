@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Implements bootstrap commands.
+ */
+
+// CLI includes.
+if (COCKPIT_CLI) {
+  $this->path('#cli', __DIR__ . '/cli');
+}
+
+// Incldude admin.
+if (COCKPIT_ADMIN && !COCKPIT_API_REQUEST) {
+  include_once __DIR__ . '/admin.php';
+}
