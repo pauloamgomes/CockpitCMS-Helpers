@@ -6,6 +6,12 @@ This addon combines a set of features that would improve the main functionality 
 
 The current implementation provides:
 
+- Password reset CLI command
+- JSON Preview for collection entries
+- Environment indicator
+- Assets in modules menubar
+- Quick actions
+
 ### Password reset
 
 A CLI command that permits to reset the password of an user, e.g.:
@@ -38,6 +44,12 @@ You can use local, dev, stg or prod and the you'll have an indicator in the cock
 **Prod**
 
 ![Prod Environment](https://monosnap.com/image/hF6MDznnCQ1ahhAEhGdtsiLrW1dPtj.png)
+
+### Assets in modules menu
+
+The modules menu includes core Collections, Singletons and Forms, the Helpers addon makes a menu entry for Assets:
+
+![Assets](https://monosnap.com/image/dq7InK3hqcckwcORLgUwl6Ulvyp6kc.png)
 
 ### Quick Actions
 
