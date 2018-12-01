@@ -27,6 +27,13 @@ $this->on('admin.init', function () use ($app) {
     if (!empty($config['quickactions'])) {
       $this->helper('admin')->addAssets('helpers:assets/cp-quickactions.tag');
       $this->helper('admin')->addAssets('helpers:assets/quickactions.js');
+      // Add assets to modules menu.
+      $this('admin')->addMenuItem('modules', [
+        'label' => 'Assets',
+        'icon' => 'assets:app/media/icons/assets.svg',
+        'route' => '/assetsmanager',
+        'active' => strpos($this['route'], '/assetsmanager') === 0,
+      ]);
     }
   }
 });
