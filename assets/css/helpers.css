@@ -1,0 +1,8 @@
+.app-header-topbar .app-name:after {
+  display: inline-block;
+  padding: 0 5px;
+  font-size: 9px;
+  line-height: 14px;
+  color: #ffffff;
+  margin-left: 10px;
+}

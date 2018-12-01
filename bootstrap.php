@@ -12,5 +12,12 @@ if (COCKPIT_CLI) {
 
 // Incldude admin.
 if (COCKPIT_ADMIN && !COCKPIT_API_REQUEST) {
+  $this->module('helpers')->extend([
+    'getQuickActions' => function() {
+      $config = $this->app->config['helpers'];
+      return $config['quickactions'] ?? [];
+    },
+  ]);
+
   include_once __DIR__ . '/admin.php';
 }

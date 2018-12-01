@@ -39,6 +39,29 @@ You can use local, dev, stg or prod and the you'll have an indicator in the cock
 
 ![Prod Environment](https://monosnap.com/image/hF6MDznnCQ1ahhAEhGdtsiLrW1dPtj.png)
 
+### Quick Actions
+
+A simple UI element that is present in the modules navigation bar and can be configured (`config.yaml`) to display a list of quick actions. Actions can be aggregated in groups, and can be a link to whatever you need, for example:
+
+```yaml
+helpers:
+  quickactions:
+    - group: Create
+      actions:
+        - label: Post
+          path: /collections/entry/post
+        - label: Page
+          path: /collections/entry/page
+        - label: Categories
+          path: /collections/entry/category
+    - group: Accounts
+      actions:
+        - label: New
+          path: /accounts/create
+```
+
+![Quick Action](https://monosnap.com/image/C50GMgiJ54dxNZKkoNfcu6Fma7YriC.png)
+
 ## Installation
 
 1. Confirm that you have Cockpit CMS (Next branch) installed and working.
