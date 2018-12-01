@@ -1,8 +1,0 @@
-.app-header-topbar {
-  border-top: 5px solid #da314b;
-}
-
-.app-header-topbar .app-name:after {
-  content: "PROD";
-  background-color: #da314b;
-}

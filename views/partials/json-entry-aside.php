@@ -31,7 +31,7 @@
     $this.update();
   });
 
-  showEntryJson() {
+  this.showEntryJson = function() {
     $this.modal.show();
     editor = $this.refs.codemirrorjson.editor;
     editor.setValue(JSON.stringify($this.entry, null, 2), true);

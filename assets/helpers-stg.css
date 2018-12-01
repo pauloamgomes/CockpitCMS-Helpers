@@ -1,8 +1,0 @@
-.app-header-topbar {
-  border-top: 5px solid #e28327;
-}
-
-.app-header-topbar .app-name:after {
-  content: "STG";
-  background-color: #e28327;
-}
