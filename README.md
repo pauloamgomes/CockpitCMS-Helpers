@@ -7,6 +7,7 @@ This addon combines a set of features that would improve the main functionality 
 The current implementation provides:
 
 - Password reset CLI command
+- Singleton data export/import CLI command
 - JSON Preview for collection entries
 - Environment indicator
 - Assets in modules menubar
@@ -19,6 +20,28 @@ A CLI command that permits to reset the password of an user, e.g.:
 ```bash
 ./cp password --user "admin" --pass "admin"
 ```
+
+### Singleton data export/import CLI command
+
+A CLI command that permits to export and import singleton data, e.g.:
+
+```bash
+./cp export-singleton --name settings
+
+Exporting data from singleton settings
+Singleton settings exported to #storage:exports/singletons/settings.json - 4014 bytes written
+```
+
+To import just run the import-singleton command:
+
+```bash
+./cp import-singleton --name settings
+Singleton settings data imported from #storage:exports/singletons/settings.json
+```
+
+**Notes:**
+The #storage:exports/singletons folder is always used for exporting/importing.
+
 
 ### JSON preview of collection entries
 
