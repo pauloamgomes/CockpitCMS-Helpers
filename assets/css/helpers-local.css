@@ -1,7 +1,3 @@
-.app-header-topbar {
-  border-top: 5px solid #8cc14c;
-}
-
 .app-header-topbar .app-name:after {
   content: "LOCAL";
   background-color: #8cc14c;
