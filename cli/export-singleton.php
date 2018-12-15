@@ -29,4 +29,4 @@ if (!$res) {
   return CLI::writeln("Error writing singleton data to ${name}", FALSE);
 }
 
-CLI::writeln("Singleton ${name} exported to #storage:exports/singletons/${name}.json - ${res} bytes written");
+CLI::writeln("Singleton ${name} exported to #storage:exports/singletons/${name}.json - ${res} bytes written", TRUE);

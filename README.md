@@ -8,6 +8,8 @@ The current implementation provides:
 
 - Password reset CLI command
 - Singleton data export/import CLI command
+- Collection data export/import CLI command
+- Addon install CLI command
 - JSON Preview for collection entries
 - Environment indicator
 - Assets in modules menubar
@@ -26,7 +28,7 @@ A CLI command that permits to reset the password of an user, e.g.:
 A CLI command that permits to export and import singleton data, e.g.:
 
 ```bash
-./cp export-singleton --name settings
+$ ./cp export-singleton --name settings
 
 Exporting data from singleton settings
 Singleton settings exported to #storage:exports/singletons/settings.json - 4014 bytes written
@@ -35,13 +37,115 @@ Singleton settings exported to #storage:exports/singletons/settings.json - 4014 
 To import just run the import-singleton command:
 
 ```bash
-./cp import-singleton --name settings
+$ ./cp import-singleton --name settings
 Singleton settings data imported from #storage:exports/singletons/settings.json
 ```
 
 **Notes:**
 The #storage:exports/singletons folder is always used for exporting/importing.
 
+### Collection data export/import CLI command
+
+A CLI command that permits to export and import collection data, e.g.:
+
+```bash
+./cp export-collection --name posts
+
+Exporting collection posts (2 entries) to #storage:exports/collections/posts.json
+Collection post exported to #storage:exports/singletons/posts.json - 4014 bytes written
+```
+
+To import just run the import-collection command:
+
+```bash
+$ ./cp import-collection --name posts
+  Importing collection posts (2 entries)
+Imported 5c12ef4746eee8004a7a7b72 (insert)
+Imported 5c14dd4746eee801bc2002c3 (insert)
+Collection posts import done. Imported 2 entries
+```
+
+If the entries already exists they will be imported as a new revision:
+
+```bash
+$ ./cp import-collection --name posts
+  Importing collection posts (2 entries)
+Imported 5c12ef4746eee8004a7a7b72 (update)
+Imported 5c14dd4746eee801bc2002c3 (update)
+Collection posts import done. Imported 2 entries
+```
+
+**Notes:**
+The #storage:exports/collections folder is always used for exporting/importing.
+
+### Addon install CLI command
+
+The main idea behind an addon install command is to provide the possibility to include in the addon folder exported data (e.g. a singleton structure, a collection structure and entries, etc..).
+Let's imagine we are working in an bunch of core data structures that we need to put in place everytime we reinstall cockpit (or we have someone in the team starting), for example:
+
+* A settings singleton
+* A page collection
+
+So we can create an addon (e.g. MySiteBase) that will have an export of above data structures and corresponding data. We can define our structure in the addon folder (e.g. `addons/MySiteBase/install`), in an `addons/MySiteBase/info.yaml` file:
+
+```yaml
+name: MySiteBase
+description: Provides core features for MySite
+version: 0.1
+install:
+  singletons:
+      - name: settings
+        source: install/settings.singleton.php
+        data: install/settings.json
+  collections:
+      - name: page
+        source: install/page.collection.php
+        rules:
+          - create: install/rules/page.create.php
+          - delete: install/rules/page.delete.php
+          - read: install/rules/page.read.php
+          - update: install/rules/page.update.php
+        data: install/page.json
+```
+
+So using above addon definition we can provide some context to the install CLI command and we can run:
+
+```bash
+$ ./cp install --name MySiteBase
+```
+
+Above command will create the data structures (Singletons and Collections) and correspondind data (Singleton data and Collection entries):
+
+```bash
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Cockpit CMS Addon installer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Processing singletons...
+ Installing singleton settings from /var/www/html/addons/MySiteBase/install/settings.singleton.php
+* Singleton 'settings' created.
+* Singleton 'settings' data imported.
+Processing collections...
+ Installing collection page from /var/www/html/addons/MySiteBase/install/page.collection.php
+* Collection 'page' created.
+ Installing collection page rules
+* Collection 'page' rule 'create' created.
+* Collection 'page' rule 'delete' created.
+* Collection 'page' rule 'read' created.
+* Collection 'page' rule 'update' created.
+ Importing collection page (2 entries)
+* Imported collection 'page' entry -> _id:5c12ef4746eee8004a7a7b72 (update)
+* Imported collection 'page' entry -> _id:5c14dd4746eee801bc2002c3 (update)
+Collection page import done. Imported 2 entries
+```
+
+If the data structures are already installed we can force an overwrite/update by using the --force param:
+
+```bash
+$ ./cp install --name MySiteBase --force
+```
+
+**@todo: Include in the install process Forms, Assets and custom operations.**
 
 ### JSON preview of collection entries
 
