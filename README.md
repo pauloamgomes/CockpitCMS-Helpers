@@ -106,6 +106,11 @@ install:
           - read: install/rules/page.read.php
           - update: install/rules/page.update.php
         data: install/page.json
+  customStorage:
+      - source: install/myfile1.php
+        target: "mycustomfolder/myfile1.php"
+      - source: install/myfile2.php
+        target: "mycustomfolder/myfile2.php"
 ```
 
 So using above addon definition we can provide some context to the install CLI command and we can run:
@@ -137,6 +142,11 @@ Processing collections...
 * Imported collection 'page' entry -> _id:5c12ef4746eee8004a7a7b72 (update)
 * Imported collection 'page' entry -> _id:5c14dd4746eee801bc2002c3 (update)
 Collection page import done. Imported 2 entries
+Processing custom storage...
+ Importing file into /var/www/html/storage/mycustomfolder/myfile1.php
+* File '/var/www/html/storage/mycustomfolder/myfile1.php' created.
+ Importing file into /var/www/html/storage/mycustomfolder/myfile2.php
+* File '/var/www/html/storage/mycustomfolder/myfile2.php' created.
 ```
 
 If the data structures are already installed we can force an overwrite/update by using the --force param:

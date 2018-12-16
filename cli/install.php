@@ -53,9 +53,9 @@ if (!empty($install['singletons'])) {
     }
     $name = $singleton['name'];
     $source = $module->_dir . '/' . $singleton['source'];
-    CLI::writeln(" Installing singleton ${name} from ${source}");
+    CLI::writeln(" Installing singleton {$name} from {$source}");
     if (!file_exists($source)) {
-      CLI::writeln("Singleton '${name}' source file ${source} missing.", FALSE);
+      CLI::writeln("Singleton '{$name}' source file {$source} missing.", FALSE);
       continue;
     }
     $target = $app->path('#storage:singleton/') . "{$name}.singleton.php";
@@ -74,7 +74,7 @@ if (!empty($install['singletons'])) {
     // Import data.
     $source = $module->_dir . '/' . $singleton['data'];
     if (!$data = $app->helper('fs')->read($source)) {
-      CLI::writeln("Cannot read json data from ${source}", FALSE);
+      CLI::writeln("Cannot read json data from {$source}", FALSE);
       continue;
     }
     $data = json_decode($data, TRUE);
@@ -84,7 +84,7 @@ if (!empty($install['singletons'])) {
         CLI::writeln("* Singleton '{$name}' data imported.", TRUE);
       }
       else {
-        CLI::writeln("Singleton '${name}' data install failed.", FALSE);
+        CLI::writeln("Singleton '{$name}' data install failed.", FALSE);
       }
     }
   }
@@ -100,7 +100,7 @@ if (!empty($install['collections'])) {
     }
     $name = $collection['name'];
     $source = $module->_dir . '/' . $collection['source'];
-    CLI::writeln(" Installing collection ${name} from ${source}");
+    CLI::writeln(" Installing collection {$name} from {$source}");
     $target = $app->path('#storage:collections/') . "{$name}.collection.php";
     $exists = FALSE;
     if (file_exists($target) && !$force) {
@@ -113,7 +113,7 @@ if (!empty($install['collections'])) {
       if (empty($install['collections'][$idx]['rules'])) {
         continue;
       }
-      CLI::writeln(" Installing collection ${name} rules");
+      CLI::writeln(" Installing collection {$name} rules");
       // Import collection rules if any.
       foreach ($install['collections'][$idx]['rules'] as $rule) {
         $type = key($rule);
@@ -173,6 +173,31 @@ if (!empty($install['collections'])) {
           }
         }
         CLI::writeln("Collection {$name} import done. Imported {$count} entries", TRUE);
+      }
+    }
+  }
+}
+
+// Handle Custom storage installation.
+if (!empty($install['customStorage'])) {
+  CLI::writeln('Processing custom storage...');
+  foreach ($install['customStorage'] as $item) {
+    $source = $module->_dir . '/' . $item['source'];
+    if (!file_exists($source)) {
+      continue;
+    }
+    $target = $app->path('#storage:') . $item['target'];
+    CLI::writeln(" Importing file into {$target}");
+    if (file_exists($target) && !$force) {
+      CLI::writeln("File '{$target}' already exists.", FALSE);
+    }
+    else {
+      $folder = dirname($target);
+      if (!is_dir($folder)) {
+        $app->helper('fs')->mkdir($folder);
+      }
+      if ($app->helper('fs')->copy($source, $target)) {
+        CLI::writeln("* File '{$target}' created.", TRUE);
       }
     }
   }
