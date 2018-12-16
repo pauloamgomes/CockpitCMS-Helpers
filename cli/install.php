@@ -47,44 +47,45 @@ $install = $info['install'];
 if (!empty($install['singletons'])) {
   CLI::writeln('Processing singletons...');
   foreach ($install['singletons'] as $singleton) {
-    if (empty($singleton['name']) || empty($singleton['source'])) {
+    if (empty($singleton['name']) || (empty($singleton['source']) && empty($singleton['data']))) {
       CLI::writeln("Invalid format for singletons in addon info file.", FALSE);
       continue;
     }
     $name = $singleton['name'];
-    $source = $module->_dir . '/' . $singleton['source'];
-    CLI::writeln(" Installing singleton {$name} from {$source}");
-    if (!file_exists($source)) {
-      CLI::writeln("Singleton '{$name}' source file {$source} missing.", FALSE);
-      continue;
-    }
-    $target = $app->path('#storage:singleton/') . "{$name}.singleton.php";
     $exists = FALSE;
-    if (file_exists($target) && !$force) {
-      CLI::writeln("Singleton '{$name}' already exists.", FALSE);
-      $exists = TRUE;
-    }
-    else {
-      $app->helper('fs')->copy($source, $target);
-      CLI::writeln("* Singleton '{$name}' created.", TRUE);
-    }
-    if (empty($singleton['data'])) {
-      continue;
-    }
-    // Import data.
-    $source = $module->_dir . '/' . $singleton['data'];
-    if (!$data = $app->helper('fs')->read($source)) {
-      CLI::writeln("Cannot read json data from {$source}", FALSE);
-      continue;
-    }
-    $data = json_decode($data, TRUE);
-    if (!$exists || $force) {
-      $res = $app->module('singletons')->saveData($name, $data, ['revision' => TRUE]);
-      if ($res) {
-        CLI::writeln("* Singleton '{$name}' data imported.", TRUE);
+    if (!empty($singleton['source'])) {
+      $source = $module->_dir . '/' . $singleton['source'];
+      CLI::writeln(" Installing singleton {$name} from {$source}");
+      if (!file_exists($source)) {
+        CLI::writeln("Singleton '{$name}' source file {$source} missing.", FALSE);
+        continue;
+      }
+      $target = $app->path('#storage:singleton/') . "{$name}.singleton.php";
+      if (file_exists($target) && !$force) {
+        CLI::writeln("Singleton '{$name}' already exists.", FALSE);
+        $exists = TRUE;
       }
       else {
-        CLI::writeln("Singleton '{$name}' data install failed.", FALSE);
+        $app->helper('fs')->copy($source, $target);
+        CLI::writeln("* Singleton '{$name}' created.", TRUE);
+      }
+    }
+    if (!empty($singleton['data'])) {
+      // Import data.
+      $source = $module->_dir . '/' . $singleton['data'];
+      if (!$data = $app->helper('fs')->read($source)) {
+        CLI::writeln("Cannot read json data from {$source}", FALSE);
+        continue;
+      }
+      $data = json_decode($data, TRUE);
+      if (!$exists || $force || empty($singleton['source'])) {
+        $res = $app->module('singletons')->saveData($name, $data, ['revision' => TRUE]);
+        if ($res) {
+          CLI::writeln("* Singleton '{$name}' data imported.", TRUE);
+        }
+        else {
+          CLI::writeln("Singleton '{$name}' data install failed.", FALSE);
+        }
       }
     }
   }
