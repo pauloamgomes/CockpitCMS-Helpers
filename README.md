@@ -9,6 +9,7 @@ The current implementation provides:
 - Password reset CLI command
 - Singleton data export/import CLI command
 - Collection data export/import CLI command
+- Better handling of collection and singletons structure changes
 - Addon install CLI command
 - JSON Preview for collection entries
 - Environment indicator
@@ -77,6 +78,25 @@ Collection posts import done. Imported 2 entries
 
 **Notes:**
 The #storage:exports/collections folder is always used for exporting/importing.
+
+### Better handling of collection and singletons structure changes
+
+Cockpit doesn't seem to map any changes in the structure of collections or singletons (e.g. removal of a field) in the data values. So if we remove a field the existing entries will not change and the field value is still returned by the API.
+
+The addon implements two hooks that handle the problem:
+
+- **collections.save.after** - when the entry is saved and if a change is detected (existing data contains fields that are not in the collection structure anymore) the entry is deleted and inserted again (the id will not change). The main reason for delete and delete resides in the fact that Cockpit db update does a merge of the updated data with the existing data.
+- **singleton.saveData.before** - for the singletons is a bit more simple, we only need to confirm if the data changed and if so we remove the old fields.
+
+Since the collection hooks will require a manual save of the collection entries, a CLI command was created to perform the update operation against all entries of a collection:
+
+```bash
+$ ./cp update-collection --name posts
+
+Collection 'posts' - Updating fields...
+Entry 5c1b8fb6cad42d03f72ab442 updated.
+Done! 1 entries updated.
+```
 
 ### Addon install CLI command
 
