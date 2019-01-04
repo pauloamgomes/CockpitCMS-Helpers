@@ -8,7 +8,7 @@
 // Module ACL definitions.
 $this("acl")->addResource('helpers', [
   'jsonview',
-  'quickcreate',
+  'quickactions',
   'assets'
 ]);
 

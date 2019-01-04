@@ -16,7 +16,7 @@
     $this.actions = [];
 
     this.on('mount', function() {
-      App.callmodule('helpers:getQuickActions').then(function(data) {
+      App.callmodule('helpers:getQuickActions', {}, 'quickactions').then(function(data) {
          if (data && data.result) {
           $this.actions = data.result;
          }
