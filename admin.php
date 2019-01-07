@@ -12,11 +12,11 @@ $this("acl")->addResource('helpers', [
   'assets'
 ]);
 
-
 $this->on('admin.init', function () use ($app) {
 
   $this->helper('admin')->addAssets('helpers:assets/css/helpers.css');
   $settings = $app->config['helpers'] ?? [];
+  extract($settings);
 
   // Add assets to modules menu.
   if ($app->module('cockpit')->hasaccess('helpers', 'assets')) {
@@ -28,12 +28,13 @@ $this->on('admin.init', function () use ($app) {
     ]);
   }
 
-  if (!empty($settings['environment']) && $app->path('helpers:assets/css/helpers-' . $settings['environment'] . '.css')) {
-    $this->helper('admin')->addAssets('helpers:assets/css/helpers-' . $settings['environment'] . '.css');
+  // Load environment specific css.
+  if (!empty($environment) && $app->path("helpers:assets/css/helpers-{$environment}.css")) {
+    $this->helper('admin')->addAssets("helpers:assets/css/helpers-{$environment}.css");
   }
 
   // Check we have quickactions in the configuration.
-  if (!empty($settings['quickactions']) && $app->module('cockpit')->hasaccess('helpers', 'quickactions')) {
+  if (!empty($quickactions) && $app->module('cockpit')->hasaccess('helpers', 'quickactions')) {
     $this->helper('admin')->addAssets('helpers:assets/cp-quickactions.tag');
     $this->helper('admin')->addAssets('helpers:assets/quickactions.js');
   }
