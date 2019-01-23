@@ -11,7 +11,7 @@ The current implementation provides:
 - Collection data export/import CLI command
 - Better handling of collection and singletons structure changes
 - Addon install CLI command
-- JSON Preview for collection entries
+- JSON Preview/Live edit for collection entries and singletons
 - Environment indicator
 - Assets in modules menubar
 - Quick actions
@@ -177,11 +177,13 @@ $ ./cp install --name MySiteBase --force
 
 **@todo: Include in the install process Forms, Assets and custom operations.**
 
-### JSON preview of collection entries
+### JSON preview/live edit of collection entries and singletons data
 
-A JSON Preview link on each colletion entry sidebar, so we can access the JSON that will be returned from the API directly from the form page, e.g.:
+A JSON link on each collection entry and singleton data sidebar, so we can access the JSON that will be returned from the API directly from the form page, e.g.:
 
-![JSON Preview](https://monosnap.com/image/AirWoZb65N22WNjPkiTyISr4JZxVLZ.png)
+![JSON Preview/Live edit](https://monosnap.com/image/RokMGmPrsJttC3GC7z65VtassAdiIS.png)
+
+The JSON can be changed directly in the editor and changes will be reflected in the form.
 
 ### Environment indicator
 

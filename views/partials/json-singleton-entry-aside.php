@@ -7,7 +7,7 @@
 }
 </style>
 
-<div class="uk-margin" if="{entry}">
+<div class="uk-margin" if="{data}">
     <label class="uk-text-small">@lang('Devel')</label>
     <div class="uk-margin-small-top">
     <a onclick="{ showEntryJson }" class="extrafields-indicator uk-text-nowrap">
@@ -18,10 +18,10 @@
 <div class="uk-modal uk-modal-json uk-height-viewport">
   <div class="uk-modal-dialog uk-modal-dialog-large">
     <a href="" class="uk-modal-close uk-close"></a>
-    <strong>@lang('JSON Data')</strong>
+    <strong>@lang('JSON Preview')</strong>
     <button onclick="{updateData}" class="button-update uk-button uk-button-small uk-button-secondary uk-margin-right">
       <i class="uk-icon-save"></i> @lang('Update')</button>
-    <div class="uk-margin uk-flex uk-flex-middle" if="{entry}">
+    <div class="uk-margin uk-flex uk-flex-middle" if="{data}">
       <codemirror ref="codemirrorjson" syntax="json"></codemirror>
     </div>
   </div>
@@ -39,7 +39,7 @@
   this.showEntryJson = function() {
     $this.modal.show();
     editor = $this.refs.codemirrorjson.editor;
-    editor.setValue(JSON.stringify($this.entry, null, 2), true);
+    editor.setValue(JSON.stringify($this.data, null, 2), true);
     editor.setOption("readOnly", false);
     editor.setSize($this.modal.dialog[0].clientWidth - 50, $this.modal.dialog[0].clientHeight - 70);
     editor.refresh();
@@ -50,15 +50,14 @@
     editor = $this.refs.codemirrorjson.editor;
     try {
       json = JSON.parse(editor.getValue());
-      $this.entry = json;
+      $this.data = json;
       $this.modal.hide();
-      App.ui.notify(App.i18n.get("Collection entry data updated! Save to persist changes."));
+      App.ui.notify(App.i18n.get("Singleton structure updated! Save to persist changes."));
       $this.update();
     } catch(e) {
       App.ui.notify(App.i18n.get("Cannot update! Invalid json structure"), "danger");
       return;
     }
   }
-
 
 </script>

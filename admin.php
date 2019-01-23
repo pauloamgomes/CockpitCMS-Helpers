@@ -48,3 +48,13 @@ $this->on('collections.entry.aside', function () use ($app) {
     $this->renderView("helpers:views/partials/json-entry-aside.php");
   }
 });
+
+/**
+ * Add json entry view on collections entry sidebar.
+ */
+$this->on('singletons.form.aside', function () use ($app) {
+  if ($app->module('cockpit')->hasaccess('helpers', 'jsonview')) {
+    $this->renderView("helpers:views/partials/json-singleton-entry-aside.php");
+  }
+});
+
