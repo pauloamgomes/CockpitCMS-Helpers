@@ -8,6 +8,7 @@
 // Module ACL definitions.
 $this("acl")->addResource('helpers', [
   'jsonview',
+  'jsonedit',
   'quickactions',
   'assets'
 ]);
@@ -45,7 +46,8 @@ $this->on('admin.init', function () use ($app) {
  */
 $this->on('collections.entry.aside', function () use ($app) {
   if ($app->module('cockpit')->hasaccess('helpers', 'jsonview')) {
-    $this->renderView("helpers:views/partials/json-entry-aside.php");
+    $editAccess = $app->module('cockpit')->hasaccess('helpers', 'jsonedit');
+    $this->renderView("helpers:views/partials/json-entry-aside.php", ["editAccess" => $editAccess]);
   }
 });
 
@@ -54,7 +56,8 @@ $this->on('collections.entry.aside', function () use ($app) {
  */
 $this->on('singletons.form.aside', function () use ($app) {
   if ($app->module('cockpit')->hasaccess('helpers', 'jsonview')) {
-    $this->renderView("helpers:views/partials/json-singleton-entry-aside.php");
+    $editAccess = $app->module('cockpit')->hasaccess('helpers', 'jsonedit');
+    $this->renderView("helpers:views/partials/json-singleton-entry-aside.php", ["editAccess" => $editAccess]);
   }
 });
 
