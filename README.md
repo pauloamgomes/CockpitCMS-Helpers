@@ -9,6 +9,7 @@ The current implementation provides:
 - Password reset CLI command
 - Singleton data export/import CLI command
 - Collection data export/import CLI command
+- Form data export/import CLI command
 - Better handling of collection and singletons structure changes
 - Addon install CLI command
 - JSON Preview/Live edit for collection entries and singletons
@@ -53,7 +54,7 @@ A CLI command that permits to export and import collection data, e.g.:
 ./cp export-collection --name posts
 
 Exporting collection posts (2 entries) to #storage:exports/collections/posts.json
-Collection post exported to #storage:exports/singletons/posts.json - 4014 bytes written
+Collection post exported to #storage:exports/collections/posts.json - 4014 bytes written
 ```
 
 To import just run the import-collection command:
@@ -74,6 +75,27 @@ $ ./cp import-collection --name posts
 Imported 5c12ef4746eee8004a7a7b72 (update)
 Imported 5c14dd4746eee801bc2002c3 (update)
 Collection posts import done. Imported 2 entries
+```
+
+### Form data export/import CLI command
+
+A CLI command that permits to export and import form data, e.g.:
+
+```bash
+./cp export-form --name submissions
+
+Exporting form posts (2 entries) to #storage:exports/forms/submissions.json
+Form post exported to #storage:exports/forms/submissions.json - 4014 bytes written
+```
+
+To import just run the import-form command:
+
+```bash
+$ ./cp import-form --name submissions
+  Importing form submissions (2 entries)
+Imported 5c12ef4746eee8004a7a7b72 (insert)
+Imported 5c14dd4746eee801bc2002c3 (insert)
+Form submissions import done. Imported 2 entries
 ```
 
 **Notes:**
