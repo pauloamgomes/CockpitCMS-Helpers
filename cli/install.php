@@ -111,28 +111,27 @@ if (!empty($install['collections'])) {
     else {
       $app->helper('fs')->copy($source, $target);
       CLI::writeln("* Collection '{$name}' created.", TRUE);
-      if (empty($install['collections'][$idx]['rules'])) {
-        continue;
-      }
-      CLI::writeln(" Installing collection {$name} rules");
-      // Import collection rules if any.
-      foreach ($install['collections'][$idx]['rules'] as $rule) {
-        $type = key($rule);
-        $source = $module->_dir . '/' . reset($rule);
-        if (!file_exists($source)) {
-          continue;
-        }
-        $target = $app->path('#storage:collections/rules/') . "{$name}.{$type}.php";
-        if (file_exists($target) && !$force) {
-          CLI::writeln("Collection '{$name}' rule '{$type}' already exists.", FALSE);
-        }
-        else {
-          if ($app->helper('fs')->copy($source, $target)) {
-            CLI::writeln("* Collection '{$name}' rule '{$type}' created.", TRUE);
+      if (!empty($install['collections'][$idx]['rules'])) {
+        CLI::writeln(" Installing collection {$name} rules");
+        // Import collection rules if any.
+        foreach ($install['collections'][$idx]['rules'] as $rule) {
+          $type = key($rule);
+          $source = $module->_dir . '/' . reset($rule);
+          if (!file_exists($source)) {
+            continue;
+          }
+          $target = $app->path('#storage:collections/rules/') . "{$name}.{$type}.php";
+          if (file_exists($target) && !$force) {
+            CLI::writeln("Collection '{$name}' rule '{$type}' already exists.", FALSE);
+          }
+          else {
+            if ($app->helper('fs')->copy($source, $target)) {
+              CLI::writeln("* Collection '{$name}' rule '{$type}' created.", TRUE);
+            }
           }
         }
       }
-      // Import collection data if present.
+
       if ((!$exists || $force) && !empty($install['collections'][$idx]['data'])) {
         $source = $module->_dir . '/' . $install['collections'][$idx]['data'];
         if (!file_exists($source)) {
