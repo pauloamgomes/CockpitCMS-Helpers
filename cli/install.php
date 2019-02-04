@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Implements CLI Command for importing singletons data.
+ * Implements CLI Command for installing addon data.
  */
 
 if (!COCKPIT_CLI) {
