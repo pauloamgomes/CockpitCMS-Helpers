@@ -7,6 +7,7 @@ This addon combines a set of features that would improve the main functionality 
 The current implementation provides:
 
 - Password reset CLI command
+- Token API keys reset
 - Singleton data export/import CLI command
 - Collection data export/import CLI command
 - Form data export/import CLI command
@@ -24,6 +25,39 @@ A CLI command that permits to reset the password of an user, e.g.:
 ```bash
 ./cp password --user "admin" --pass "admin"
 ```
+
+### Token API keys reset
+
+A CLI command that permits to reset the tokens. By Default Cockpit has one "master" and one or more "special" keys.
+
+Set the master key
+
+```bash
+./cp reset-api --name master --key 7e4c32f0546317bb8a3ec0166fa63c
+  API key master set to 7e4c32f0546317bb8a3ec0166fa63c
+```
+
+Generate a new master key
+
+```bash
+./cp reset-api --name master
+  API key master set to 7e4c32f0546317bb8a3ec0166fa63c
+```
+
+Set "special" key at position 1 (first entry of special keys)
+
+```bash
+./cp reset-api --name special --number 1
+  API key special set to 7e4c32f0546317bb8a3ec0166fa63c
+```
+
+Generate a new "special" key for position 1
+
+```bash
+./cp reset-api --name special --number 1
+  API key special set to 7e4c32f0546317bb8a3ec0166fa63c
+```
+
 
 ### Singleton data export/import CLI command
 
