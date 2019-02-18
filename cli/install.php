@@ -11,6 +11,7 @@ if (!COCKPIT_CLI) {
 
 $name = $app->param('name', FALSE);
 $force = $app->param('force', FALSE);
+$nodata = $app->param('nodata', FALSE);
 
 CLI::writeln('');
 CLI::writeln('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
@@ -39,6 +40,10 @@ if (!$info = Spyc::YAMLLoad($module->_dir . '/info.yaml')) {
 
 if (empty($info['install'])) {
   return CLI::writeln("No installation steps found at {$module->_dir}/info.yaml", FALSE);
+}
+
+if ($nodata) {
+  CLI::writeln('nodata flag is active, processing only data structures, no contents will be imported');
 }
 
 $install = $info['install'];
@@ -70,7 +75,7 @@ if (!empty($install['singletons'])) {
         CLI::writeln("* Singleton '{$name}' created.", TRUE);
       }
     }
-    if (!empty($singleton['data'])) {
+    if (!empty($singleton['data']) && !$nodata) {
       // Import data.
       $source = $module->_dir . '/' . $singleton['data'];
       if (!$data = $app->helper('fs')->read($source)) {
@@ -132,7 +137,7 @@ if (!empty($install['collections'])) {
         }
       }
 
-      if ((!$exists || $force) && !empty($install['collections'][$idx]['data'])) {
+      if ((!$exists || $force) && !empty($install['collections'][$idx]['data']) && !$nodata) {
         $source = $module->_dir . '/' . $install['collections'][$idx]['data'];
         if (!file_exists($source)) {
           CLI::writeln("Collection data source {$source} doesn't exists!", FALSE);
