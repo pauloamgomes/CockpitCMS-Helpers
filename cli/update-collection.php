@@ -28,8 +28,6 @@ $collection_fields = array_map(function($item) {
   return $item['name'];
 }, $collection['fields']);
 
-$collection_name = $app->storage->getCollection("collections/{$_id}")->getCollectionName();
-
 $entries = $app->storage->getCollection("collections/{$_id}")->find();
 $entries = $entries->toArray();
 $updated = 0;
