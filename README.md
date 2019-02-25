@@ -6,17 +6,18 @@ This addon combines a set of features that would improve the main functionality 
 
 The current implementation provides:
 
-- Password reset CLI command
-- Token API keys reset
-- Singleton data export/import CLI command
-- Collection data export/import CLI command
-- Form data export/import CLI command
-- Better handling of collection and singletons structure changes
-- Addon install CLI command
-- JSON Preview/Live edit for collection entries and singletons
-- Environment indicator
-- Assets in modules menubar
-- Quick actions
+- [Password reset CLI command](#password-reset)
+- [Token API keys reset](#token-api-keys-reset)
+- [Singleton data export/import CLI command](#singleton-data-exportimport-cli-command)
+- [Collection data export/import CLI command](#collection-data-exportimport-cli-command)
+- [Form data export/import CLI command](#form-data-exportimport-cli-command)
+- [Better handling of collection and singletons structure changes](#better-handling-of-collection-and-singletons-structure-changes)
+- [Addon install CLI command](#addon-install-cli-command)
+- [JSON Preview/Live edit for collection entries and singletons](#json-previewlive-edit-of-collection-entries-and-singletons-data)
+- [Environment indicator](#environment-indicator)
+- [Assets in modules menubar](#assets-in-modules-menu)
+- [Quick actions](#quick-actions)
+- [Content Preview url override](#content-preview-url-override)
 
 ### Password reset
 
@@ -288,6 +289,24 @@ helpers:
 ```
 
 ![Quick Action](https://monosnap.com/image/C50GMgiJ54dxNZKkoNfcu6Fma7YriC.png)
+
+### Content Preview url override
+
+By default the Cockpit preview url is tied to the collection structure, and therefore is not possible
+to have different urls (e.g. for local environment or dev/stage environments).
+The Helpers addon provides a mechanism to override the url in the config.yaml file. For example, if we have a configured url in the collection like below:
+
+![Preview Url](https://monosnap.com/image/IIlcvTPmBMj9gKSynZVlOf6geXudNt.png)
+
+And in the config.yaml we have an entry like:
+
+```yaml
+helpers:
+  preview:
+    url: https://localhost:3003
+```
+
+Cockpit will use `https://localhost:3003/preview/page` as preview url.
 
 ## Installation
 
