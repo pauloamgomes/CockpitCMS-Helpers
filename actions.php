@@ -41,6 +41,10 @@ $app->on('collections.save.after', function($name, &$entry, $isUpdate) use($app)
  */
 $app->on('singleton.saveData.before', function($singleton, &$data) use($app) {
 
+  if (empty($data) || !is_array($data)) {
+    return;
+  }
+
   $core_fields = ['_mby', '_by'];
 
   $singleton_fields = array_map(function($item) {
