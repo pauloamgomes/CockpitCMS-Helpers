@@ -10,7 +10,8 @@ $this("acl")->addResource('helpers', [
   'jsonview',
   'jsonedit',
   'quickactions',
-  'assets'
+  'assets',
+  'collectionSelect'
 ]);
 
 $this->on('admin.init', function () use ($app) {
@@ -39,6 +40,9 @@ $this->on('admin.init', function () use ($app) {
     $this->helper('admin')->addAssets('helpers:assets/cp-quickactions.tag');
     $this->helper('admin')->addAssets('helpers:assets/quickactions.js');
   }
+
+  // Load custom fields.
+  $this->helper('admin')->addAssets('helpers:assets/field-collectionselect.tag');
 });
 
 /**

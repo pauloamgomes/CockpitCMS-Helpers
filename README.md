@@ -18,6 +18,7 @@ The current implementation provides:
 - [Assets in modules menubar](#assets-in-modules-menu)
 - [Quick actions](#quick-actions)
 - [Content Preview url override](#content-preview-url-override)
+- [Collection Select Field](#collection-select-field)
 
 ### Password reset
 
@@ -307,6 +308,29 @@ helpers:
 ```
 
 Cockpit will use `https://localhost:3003/preview/page` as preview url.
+
+### Collection Select Field
+
+Cockpit provides the Collection Link field to easily reference collection entries, however for some scenarios (e.g. we have a small and fixed number of items) a select element can be more useful.
+
+The Collection Select field accepts the same parameters in the field definition as the Collection Link field, e.g.:
+
+```json
+{
+  "link": "page",
+  "display": "title",
+  "limit": 20
+}
+```
+
+The field requires an ACL (for non admin users) to be set in the config, e.g:
+
+```yaml
+groups:
+  editor:
+    helpers:
+      collectionSelect: true
+```
 
 ## Installation
 
