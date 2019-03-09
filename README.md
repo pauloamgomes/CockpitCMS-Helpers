@@ -19,6 +19,7 @@ The current implementation provides:
 - [Quick actions](#quick-actions)
 - [Content Preview url override](#content-preview-url-override)
 - [Collection Select Field](#collection-select-field)
+- [Max Revisions](#max-revisions)
 
 ### Password reset
 
@@ -330,6 +331,29 @@ groups:
   editor:
     helpers:
       collectionSelect: true
+```
+
+### Max Revisions
+
+Cockpit by default creates revisions for collections and singletons without a limit, so we can end with thousands of revisions for a collection/singleton, mostly when performing batch updates or tests.
+
+The helpers addon provides a mechanism to set a limit per collection/singleton or to all collections or singletons:
+
+* Set max revisions to 10 for all collections and singletons
+```yaml
+helpers:
+  maxRevisions:
+    collections: 10
+    singletons: 10
+```
+
+* Set max revisions to 10 to all collections/singletons and 15 to page collection.
+```yaml
+helpers:
+  maxRevisions:
+    collections: 10
+    singletons: 10
+    page: 15
 ```
 
 ## Installation

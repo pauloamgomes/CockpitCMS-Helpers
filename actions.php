@@ -7,6 +7,12 @@
 $app->on('collections.save.after', function($name, &$entry, $isUpdate) use($app) {
   $collection = $app->module('collections')->collection($name);
 
+  // Handle max revisions.
+  if ($isUpdate) {
+    $app->module('helpers')->removeMaxRevisions('collections', $name, $entry['_id']);
+  }
+
+  // Check if collection structure changed.
   $core_fields = ['_id', '_mby', '_by', '_modified', '_created'];
 
   $collection_fields = array_map(function($item) {
@@ -58,5 +64,14 @@ $app->on('singleton.saveData.before', function($singleton, &$data) use($app) {
     if (!in_array($name, $singleton_fields)) {
       unset($data[$name]);
     }
+  }
+});
+
+/**
+ * Handle singletons on saveData after.
+ */
+$app->on('singleton.saveData.after', function($singleton, $data) use($app) {
+  if (!empty($singleton['_id'])) {
+    $app->module('helpers')->removeMaxRevisions('singletons', $singleton['name'], $singleton['_id']);
   }
 });

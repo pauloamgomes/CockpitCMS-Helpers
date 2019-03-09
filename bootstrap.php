@@ -31,6 +31,25 @@ if (COCKPIT_ADMIN && !COCKPIT_API_REQUEST) {
       return $entries ?? [];
     },
 
+    'removeMaxRevisions' => function($type, $name, $_id) {
+      $settings = $this->app->config['helpers'] ?? [];
+      $maxRevisions = $settings['maxRevisions'] ?? FALSE;
+      $maxRev = 0;
+      if (!empty($maxRevisions[$name])) {
+        $maxRev = (int) $maxRevisions[$name];
+      }
+      elseif (!empty($maxRevisions[$type])) {
+        $maxRev = (int) $maxRevisions[$type];
+      }
+      $revisions = $this->app->helper('revisions')->getList($_id);
+      if ($maxRev > 1 && count($revisions) > $maxRev) {
+        $revisions = array_slice($revisions, $maxRev, count($revisions) - 1);
+        foreach ($revisions as $revision) {
+          $this->app->helper('revisions')->remove($revision['_id']);
+        }
+      }
+    }
+
   ]);
 
   include_once __DIR__ . '/admin.php';
