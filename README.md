@@ -19,6 +19,7 @@ The current implementation provides:
 - [Quick actions](#quick-actions)
 - [Content Preview url override](#content-preview-url-override)
 - [Collection Select Field](#collection-select-field)
+- [Singleton Select Field](#singleton-select-field)
 - [Max Revisions](#max-revisions)
 
 ### Password reset
@@ -332,6 +333,29 @@ groups:
     helpers:
       collectionSelect: true
 ```
+
+### Singleton Select Field
+
+Cockpit doesn't provide a mechanism to link to singletons, however for some scenarios (e.g. define global data like blocks) it can be useful.
+
+The Singleton Select field accepts the below parameters:
+
+```json
+{
+  "group": "Blocks",
+  "limit": 20
+}
+```
+
+The field requires an ACL (for non admin users) to be set in the config, e.g:
+
+```yaml
+groups:
+  editor:
+    helpers:
+      singletonSelect: true
+```
+
 
 ### Max Revisions
 

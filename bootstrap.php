@@ -31,6 +31,22 @@ if (COCKPIT_ADMIN && !COCKPIT_API_REQUEST) {
       return $entries ?? [];
     },
 
+    'getSingletons' => function($group = NULL, $limit = 25) {
+      $results = $this->app->module('singletons')->singletons();
+
+      $singletons = [];
+      foreach ($results as $singleton) {
+        if ($singleton['group'] === $group) {
+          $singletons[] = [
+            'label' => $singleton['label'],
+            'value' => $singleton['name'],
+          ];
+        }
+      }
+
+      return $singletons;
+    },
+
     'removeMaxRevisions' => function($type, $name, $_id) {
       $settings = $this->app->config['helpers'] ?? [];
       $maxRevisions = $settings['maxRevisions'] ?? FALSE;
@@ -54,4 +70,9 @@ if (COCKPIT_ADMIN && !COCKPIT_API_REQUEST) {
 
   include_once __DIR__ . '/admin.php';
   include_once __DIR__ . '/actions.php';
+}
+
+// Incldude admin.
+if (COCKPIT_API_REQUEST) {
+  include_once __DIR__ . '/api.php';
 }

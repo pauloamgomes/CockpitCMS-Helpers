@@ -2,7 +2,7 @@
 
     <select onchange="{changeOption}" show="{element == 'select'}" ref="input" class="uk-width-1-1 {opts.cls}" value="{ value }">
         <option value="">{loading ? "loading..." : App.i18n.get("- Select -")}</option>
-        <option each="{ option,idx in Object.values(options) }" value="{ option._id }" selected="{ value._id === option._id }">{ option.display }</option>
+        <option each="{ option,idx in Object.values(options) }" value="{ option._id }" selected="{ value && value._id && value._id === option._id }">{ option.display }</option>
     </select>
 
     <script>

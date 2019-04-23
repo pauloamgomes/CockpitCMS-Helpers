@@ -11,7 +11,8 @@ $this("acl")->addResource('helpers', [
   'jsonedit',
   'quickactions',
   'assets',
-  'collectionSelect'
+  'collectionSelect',
+  'singletonSelect'
 ]);
 
 $this->on('admin.init', function () use ($app) {
@@ -43,6 +44,7 @@ $this->on('admin.init', function () use ($app) {
 
   // Load custom fields.
   $this->helper('admin')->addAssets('helpers:assets/field-collectionselect.tag');
+  $this->helper('admin')->addAssets('helpers:assets/field-singletonselectlink.tag');
 });
 
 /**
