@@ -17,7 +17,7 @@ $app->on('collections.save.before', function($name, $entry, $isUpdate) use ($app
       $filter[$field] = $entry[$field];
 
       if ($isUpdate && isset($entry['_id'])) {
-        if ($this->app->storage->type === 'mongodb') {
+        if ($app->storage->type === 'mongodb') {
           $filter['_id'] = ['$ne' => new MongoDB\BSON\ObjectId($entry['_id'])];
         }
         else {
