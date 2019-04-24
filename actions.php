@@ -21,7 +21,7 @@ $app->on('collections.save.before', function($name, $entry, $isUpdate) use ($app
           $filter['_id'] = ['$ne' => new MongoDB\BSON\ObjectId($entry['_id'])];
         }
         else {
-          $filter['_id'] = ['$not' => $entry['_id'];
+          $filter['_id'] = ['$not' => $entry['_id']];
         }
       }
 
