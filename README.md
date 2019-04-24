@@ -21,6 +21,7 @@ The current implementation provides:
 - [Collection Select Field](#collection-select-field)
 - [Singleton Select Field](#singleton-select-field)
 - [Max Revisions](#max-revisions)
+- [Unique Fields](#unique-fields)
 
 ### Password reset
 
@@ -379,6 +380,24 @@ helpers:
     singletons: 10
     page: 15
 ```
+
+
+### Unique Fields
+
+Cockpit by default permits to create entries with same values, that can be an issue for example when we want to have a unique title.
+
+The addon provides via configuration the possibility to define per collection the fields that should be unique, e.g.:
+
+```yaml
+helpers:
+  uniqueFields:
+    page:
+      - title
+    city:
+      - title
+      - name
+```
+
 
 ## Installation
 
