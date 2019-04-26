@@ -8,10 +8,18 @@
 $app->on('collections.find.after', function ($name, &$entries) use ($app) {
   // Get the collection.
   $collection = $app->module('collections')->collection($name);
-  // Exclude on unpublished state.
   $field_name = NULL;
+  $subfield_name = NULL;
   foreach ($collection['fields'] as $field) {
-    if ($field['type'] === 'singletonselectlink') {
+    if ($field['type'] === 'set') {
+      foreach ($field['options']['fields'] as $subfield) {
+        if ($subfield['type'] === 'singletonselectlink') {
+          $field_name = $field['name'];
+          $subfield_name = $subfield['name'];
+        }
+      }
+    }
+    elseif ($field['type'] === 'singletonselectlink') {
       $field_name = $field['name'];
       break;
     }
@@ -22,11 +30,18 @@ $app->on('collections.find.after', function ($name, &$entries) use ($app) {
   }
 
   foreach ($entries as $idx => $entry) {
-    if (!empty($entry[$field_name])) {
+    if ($subfield_name && !empty($entry[$field_name]) && !empty($entry[$field_name][$subfield_name])) {
+      $data = $app->module('singletons')->getData($entry[$field_name][$subfield_name]);
+      if ($data) {
+        $entries[$idx][$field_name][$subfield_name] = $data;
+      }
+    }
+    elseif (!empty($entry[$field_name])) {
       $data = $app->module('singletons')->getData($entry[$field_name]);
       if ($data) {
         $entries[$idx][$field_name] = $data;
       }
     }
   }
+
 });
