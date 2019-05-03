@@ -61,7 +61,11 @@ $this->on('collections.entry.aside', function () use ($app) {
   $settings = $app->config['helpers'] ?? [];
   extract($settings);
   if (isset($preview) && !empty($preview['url'])) {
-    $this->renderView("helpers:views/partials/collection-preview.php", ["previewUrl" => $preview['url']]);
+    $app->trigger("helpers.preview.url", [&$preview]);
+    $this->renderView("helpers:views/partials/collection-preview.php", [
+      "previewUrl" => $preview['url'],
+      "previewToken" => $preview['token'] ?? ''
+    ]);
   }
 });
 
