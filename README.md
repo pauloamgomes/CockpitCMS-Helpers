@@ -22,6 +22,7 @@ The current implementation provides:
 - [Singleton Select Field](#singleton-select-field)
 - [Max Revisions](#max-revisions)
 - [Unique Fields](#unique-fields)
+- [Locks removal](#locks-removal)
 
 ### Password reset
 
@@ -396,6 +397,20 @@ helpers:
     city:
       - title
       - name
+```
+
+PLEASE NOTE THAT BY ACTIVATING ABOVE WILL REMOVE THE COCKPIT DUPLICATE FUNCTIONALITY
+
+### Locks Removal
+
+When editing contents cockpit provides a lock editing feature, however that seems to not be expired, and to avoid ending with contents locked for a long time the Helpers provide a cli command to remove the locks (e.g. to be used in a cron command).
+
+```bash
+# Remove all locks
+$ php cp reset-expiredlocks
+
+# Remove locks older than 6h (21600s)
+$ php cp reset-expiredlocks --time 21600
 ```
 
 
