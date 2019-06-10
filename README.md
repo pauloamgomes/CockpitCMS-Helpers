@@ -23,6 +23,7 @@ The current implementation provides:
 - [Max Revisions](#max-revisions)
 - [Unique Fields](#unique-fields)
 - [Locks removal](#locks-removal)
+- [Cockpit search on collections](#cockpit-search-on-collections)
 
 ### Password reset
 
@@ -413,6 +414,24 @@ $ php cp reset-expiredlocks
 $ php cp reset-expiredlocks --time 21600
 ```
 
+### Cockpit search on collections
+
+Cockpit provides a basic global search that can be used to search on pre-defined set of elements like collection types or user accounts. The helpers addons extends that functionality to work also on collection entries, making possible to search directly on any collection type entries.
+
+To active that functionality add to your `config.yaml` the collections and title field name you want to perform search, e.g.:
+
+```yaml
+helpers:
+  cockpitSearch:
+    limit: 10
+    collections:
+      page: title
+      post: title
+```
+
+On the above example when hitting the global search cockpit will return results from collections page and post (on the field title):
+
+![Search](https://monosnap.com/image/uhtIkShzmlcGPTNOL5hSn9OQvvqdv7)
 
 ## Installation
 

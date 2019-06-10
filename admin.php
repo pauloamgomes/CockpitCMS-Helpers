@@ -79,3 +79,41 @@ $this->on('singletons.form.aside', function () use ($app) {
   }
 });
 
+
+/**
+ * Extend cockpit internal search.
+ */
+$app->on('cockpit.search', function($search, $list) use ($app) {
+  $settings = $app->config['helpers'] ?? [];
+  extract($settings);
+
+  if (!isset($cockpitSearch) || empty($cockpitSearch['collections'])) {
+    return;
+  }
+
+  $search = preg_quote($search, '/');
+
+  $options['limit'] = $search['limit'] ?? 10;
+  $options['simple'] = 1;
+  $options['populate'] = 0;
+  $options['sort'] = ['_modified' => -1];
+
+  foreach ($cockpitSearch['collections'] as $name => $field) {
+    $options['filter'] = [$field => ['$regex' => $search, '$options' => 'i']];
+    $options['fields'] = [
+      '_id' => 1,
+      $field => 1,
+    ];
+
+    $entries = $app->module('collections')->find($name, $options);
+    if (!empty($entries)) {
+      foreach ($entries as $key => $entry) {
+        $list[] = [
+          'icon'  => 'file-text',
+          'title' => $entry[$field],
+          'url'   => $this->routeUrl("/collections/entry/{$name}/{$entry['_id']}"),
+        ];
+      }
+    }
+  }
+});
