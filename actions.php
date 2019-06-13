@@ -37,14 +37,18 @@ $app->on('collections.save.before', function($name, $entry, $isUpdate) use ($app
  * Recheck collection structure and remove fields that doesnt exist anymore.
  */
 $app->on('collections.save.after', function($name, &$entry, $isUpdate) use($app) {
-  $collection = $app->module('collections')->collection($name);
-
   // Handle max revisions.
   if ($isUpdate) {
     $app->module('helpers')->removeMaxRevisions('collections', $name, $entry['_id']);
   }
 
-  // Check if collection structure changed.
+  // Enforce collection schema update if there are changes.
+  $config = $app->config['helpers'];
+  $collection = $app->module('collections')->collection($name);
+  if (empty($config['checkSchema']) || !$config['checkSchema']) {
+    return;
+  }
+
   $core_fields = ['_id', '_mby', '_by', '_modified', '_created'];
 
   $collection_fields = array_map(function($item) {
@@ -78,6 +82,10 @@ $app->on('collections.save.after', function($name, &$entry, $isUpdate) use($app)
  * Recheck singleton structure and remove fields that doesnt exist anymore.
  */
 $app->on('singleton.saveData.before', function($singleton, &$data) use($app) {
+  $config = $app->config['helpers'];
+  if (empty($config['checkSchema']) || !$config['checkSchema']) {
+    return;
+  }
 
   if (empty($data) || !is_array($data)) {
     return;

@@ -151,6 +151,13 @@ The addon implements two hooks that handle the problem:
 - **collections.save.after** - when the entry is saved and if a change is detected (existing data contains fields that are not in the collection structure anymore) the entry is deleted and inserted again (the id will not change). The main reason for delete and delete resides in the fact that Cockpit db update does a merge of the updated data with the existing data.
 - **singleton.saveData.before** - for the singletons is a bit more simple, we only need to confirm if the data changed and if so we remove the old fields.
 
+That validation only takes place if its defined in the helpers global configuration as below:
+
+```yam
+helpers:
+  checkSchema: true
+```
+
 Since the collection hooks will require a manual save of the collection entries, a CLI command was created to perform the update operation against all entries of a collection:
 
 ```bash
