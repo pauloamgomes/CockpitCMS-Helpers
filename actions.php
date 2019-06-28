@@ -49,7 +49,7 @@ $app->on('collections.save.after', function($name, &$entry, $isUpdate) use($app)
     return;
   }
 
-  $core_fields = ['_id', '_mby', '_by', '_modified', '_created'];
+  $core_fields = ['_id', '_mby', '_by', '_modified', '_created', '_o', '_pid'];
 
   $collection_fields = array_map(function($item) {
     return $item['name'];
