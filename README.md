@@ -24,6 +24,7 @@ The current implementation provides:
 - [Unique Fields](#unique-fields)
 - [Locks removal](#locks-removal)
 - [Cockpit search on collections](#cockpit-search-on-collections)
+- [Basic migrations CLI command](#basic-migrations-cli-command)
 
 ### Password reset
 
@@ -439,6 +440,37 @@ helpers:
 On the above example when hitting the global search cockpit will return results from collections page and post (on the field title):
 
 ![Search](https://monosnap.com/image/uhtIkShzmlcGPTNOL5hSn9OQvvqdv7)
+
+### Basic migrations CLI command
+
+On the event you have a running website and you need to change some field structures, it can be helpfull to have a
+mechanism to run the changes against the updated contents.
+The addon provides a very simple CLI command that works as a convention/wrapper for your migration script, all the logic
+behind the migration is still required to be handled by you.
+
+Put your script on your addon inside a migrations folder, e.g.: `<addon_name>/migrations/20190710-update-posts.php` containing
+a function name `migration_20190710_update_posts`, contents can be like below:
+
+```php
+<?php
+// Update post contents field date type.
+function migration_20190710_update_posts($app) {
+  $collection = $app->module('collections')->collection('posts');
+  $entries = $app->storage->find("collections/{$collection['_id']}")->toArray();
+  foreach ($entries as $entry) {
+    // Perform your changes.
+    $entry['field_xpto'] = [...];
+    // And save entry.
+    $app->module('collections')->save('posts', $entry, ['revision' => TRUE]);
+  }
+}
+```
+
+and just run the command:
+
+```bash
+$ php cp --addon <addon_name> --name 20190710-update-posts
+```
 
 ## Installation
 
