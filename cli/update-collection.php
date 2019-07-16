@@ -22,7 +22,7 @@ if (!$collection = $app->module('collections')->collection($name)) {
 
 $_id = $collection['_id'];
 
-$core_fields = ['_id', '_mby', '_by', '_modified', '_created'];
+$core_fields = ['_id', '_mby', '_by', '_modified', '_created', '_o', '_pid'];
 
 $collection_fields = array_map(function($item) {
   return $item['name'];
