@@ -55,12 +55,36 @@ $app->on('collections.save.after', function($name, &$entry, $isUpdate) use($app)
     return $item['name'];
   }, $collection['fields']);
 
+  // We retrieve list of languages because field may contain locale key.
+  // E.g. field_jp or field_example_fr.
+  $locales = [];
+  foreach ($app->retrieve('config/languages', []) as $key => $val) {
+    if (is_numeric($key)) $key = $val;
+    $locales[] = $key;
+  }
+
   $update = FALSE;
   foreach ($entry as $name => $value) {
     if (in_array($name, $core_fields)) {
       continue;
     }
-    if (!in_array($name, $collection_fields)) {
+
+    // Since we need to be sure that we don't remove service field with _slug, _locale or _locale_slug.
+    // Clean field from services parts above.
+    // E.g. field_example_slug -> field_example, 
+    // another_field_example_jp_slug -> another_field_example.
+    
+    $pure_field = $name;
+    $field_parts = explode("_", $name);
+    if (count($field_parts) > 1) {
+      $pure_field = implode(
+        array_filter($field_parts, function($part) use ($locales) {
+          return $part !== "slug" && !in_array($part, $locales);
+        }
+      ), "_");
+    }
+
+    if (!in_array($pure_field, $collection_fields)) {
       $update = TRUE;
       unset($entry[$name]);
     }
@@ -97,11 +121,28 @@ $app->on('singleton.saveData.before', function($singleton, &$data) use($app) {
     return $item['name'];
   }, $singleton['fields']);
 
+  $locales = [];
+  foreach ($app->retrieve('config/languages', []) as $key => $val) {
+    if (is_numeric($key)) $key = $val;
+    $locales[] = $key;
+  }
+
   foreach ($data as $name => $value) {
     if (in_array($name, $core_fields)) {
       continue;
     }
-    if (!in_array($name, $singleton_fields)) {
+    
+    $pure_field = $name;
+    $field_parts = explode("_", $name);
+    if (count($field_parts) > 1) {
+      $pure_field = implode(
+        array_filter($field_parts, function($part) use ($locales) {
+          return $part !== "slug" && !in_array($part, $locales);
+        }
+      ), "_");
+    }
+
+    if (!in_array($pure_field, $singleton_fields)) {
       unset($data[$name]);
     }
   }
