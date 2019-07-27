@@ -8,7 +8,7 @@
     <script>
 
         var $this = this;
-        this.options = [];
+        this.options = {};
         this.element = 'select';
         this.value = {
             _id: '',
@@ -20,10 +20,10 @@
             this.refs.input.value = this.root.$value;
             this.element = opts.element || 'select';
             limit = opts.limit || 25;
-            display = opts.display || 'title';
 
             App.callmodule('helpers:getCollectionEntries', [opts.link, limit], 'collectionSelect').then(function(data) {
                 if (data && data.result) {
+                    display = opts.display || 'title';
                     data.result.forEach(function(entry) {
                         if (entry._id && entry[display]) {
                             $this.options[entry._id] = {
@@ -32,12 +32,11 @@
                                 display: entry[display]
                             };
                         }
-                    })
+                    });
                     $this.loading = false;
                     $this.update();
                 }
             });
-
 
             this.update();
         });
