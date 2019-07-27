@@ -45,6 +45,7 @@ $this->on('admin.init', function () use ($app) {
   // Load custom fields.
   $this->helper('admin')->addAssets('helpers:assets/field-collectionselect.tag');
   $this->helper('admin')->addAssets('helpers:assets/field-singletonselectlink.tag');
+  $this->helper('admin')->addAssets('helpers:assets/renderers.js');
 });
 
 /**
