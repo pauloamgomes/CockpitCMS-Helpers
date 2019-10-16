@@ -53,11 +53,18 @@
   this.updateData = function(e) {
     editor = $this.refs.codemirrorjson.editor;
     try {
-      json = JSON.parse(editor.getValue());
-      $this.data = json;
-      $this.modal.hide();
-      App.ui.notify(App.i18n.get("Singleton structure updated! Save to persist changes."));
+      _.extend($this.data, JSON.parse(editor.getValue()));
       $this.update();
+
+      var elements = App.$('cp-field[type=wysiwyg]');
+      elements.each(function(key, el) {
+        var id = App.$(el).find('textarea').first().attr('id');
+        tinyMCE.get(id).setContent(el.$getValue());
+      });
+
+      $this.modal.hide();
+      $this.update();
+      App.ui.notify(App.i18n.get("Singleton structure updated! Save to persist changes."));
     } catch(e) {
       App.ui.notify(App.i18n.get("Cannot update! Invalid json structure"), "danger");
       return;
