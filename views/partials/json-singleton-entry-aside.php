@@ -10,9 +10,10 @@
 <div class="uk-margin" if="{data}">
     <label class="uk-text-small">@lang('Devel')</label>
     <div class="uk-margin-small-top">
-    <button onclick="{ showEntryJson }" class="extrafields-indicator uk-text-nowrap uk-button uk-button-small uk-button-secondary">
-      <i class="uk-icon-code uk-icon-justify"></i>@lang('JSON Inspector')
-    </button>
+      <button onclick="{ showEntryJson }" class="extrafields-indicator uk-text-nowrap uk-button uk-button-small uk-button-secondary">
+        <i class="uk-icon-code uk-icon-justify"></i>@lang('JSON Inspector')
+      </button>
+    </div>
 </div>
 
 <div class="uk-modal uk-modal-json uk-height-viewport">
