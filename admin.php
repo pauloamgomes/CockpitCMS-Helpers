@@ -51,11 +51,15 @@ $this->on('admin.init', function () use ($app) {
 /**
  * Add json entry view on collections entry sidebar.
  */
-$this->on('collections.entry.aside', function () use ($app) {
-  // Json view.
-  if ($app->module('cockpit')->hasaccess('helpers', 'jsonview')) {
-    $editAccess = $app->module('cockpit')->hasaccess('helpers', 'jsonedit');
-    $this->renderView("helpers:views/partials/json-entry-aside.php", ["editAccess" => $editAccess]);
+$this->on('collections.entry.aside', function ($name) use ($app) {
+  $perms['entryEdit'] = $app->module('collections')->hasaccess($name, 'entries_edit');
+  $perms['entryCreate'] = $app->module('collections')->hasaccess($name, 'entries_create');
+  $perms['entryDelete'] = $app->module('collections')->hasaccess($name, 'entries_delete');
+  $perms['jsonEdit'] = $app->module('cockpit')->hasaccess('helpers', 'jsonedit');
+  $perms['jsonView'] = $app->module('cockpit')->hasaccess('helpers', 'jsonview');
+  $this->renderView("helpers:views/partials/extra-actions-aside.php", ['permissions' => $perms]);
+  if ($perms['jsonView']) {
+    $this->renderView("helpers:views/partials/json-entry-aside.php");
   }
 
   // Collection preview.

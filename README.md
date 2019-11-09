@@ -17,6 +17,7 @@ The current implementation provides:
 - [Environment indicator](#environment-indicator)
 - [Assets in modules menubar](#assets-in-modules-menu)
 - [Quick actions](#quick-actions)
+- [Collection Entries extra sidebar actions](#collection-entries-extra-sidebar-actions)
 - [Content Preview url override](#content-preview-url-override)
 - [Collection Select Field](#collection-select-field)
 - [Singleton Select Field](#singleton-select-field)
@@ -252,9 +253,21 @@ $ ./cp install --name MySiteBase --force
 
 A JSON link on each collection entry and singleton data sidebar, so we can access the JSON that will be returned from the API directly from the form page, e.g.:
 
-![JSON Preview/Live edit](https://monosnap.com/image/RokMGmPrsJttC3GC7z65VtassAdiIS.png)
+![JSON Preview/Live edit](https://monosnap.com/image/O8y6ZtPSN9GbnP5jOc3mpMWaZACSGI)
 
 The JSON can be changed directly in the editor and changes will be reflected in the form.
+
+A view and edit permission is available for non admin users, e.g.:
+
+```yaml
+groups:
+  editor:
+    helpers:
+      jsonview: true
+      jsonedit: true
+```
+
+Cockpit introduced recently in the core an option to inspect the entry json, however it doesn't provide yet editing capabilities.
 
 ### Environment indicator
 
@@ -303,6 +316,16 @@ helpers:
 ```
 
 ![Quick Action](https://monosnap.com/image/C50GMgiJ54dxNZKkoNfcu6Fma7YriC.png)
+
+### Collection Entries extra sidebar actions
+
+The addon extends the sidebar when viewing a collection entry with 3 handy extra actions:
+
+- Add new entry (create a new entry without leaving the page)
+- Duplicate (clone) the existing entry (without leaving the page)
+- Delete the existing entry
+
+![Cockpit collection entry extra actions](https://monosnap.com/image/jZt27rZB2rpjDvqrNWivWuaMk04wMa)
 
 ### Content Preview url override
 
